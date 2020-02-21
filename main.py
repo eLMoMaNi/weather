@@ -17,8 +17,6 @@ else:
     with open("pickledAccu.txt","rb") as f:
         weather = pickle.load(f)
 w = ImageCombine(weather,bg_path,fg_path)
-w.show()
+w.toImage().show()
 
-print(weather.forecasts)
-#weather.print()
 

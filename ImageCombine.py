@@ -1,10 +1,9 @@
 from PIL import Image, ImageDraw, ImageFont, ImageFilter     #PILLOW dependencies
 from bidi.algorithm import get_display          #for fixing arabic text
 import arabic_reshaper                          #for fixing arabic text
-from Weather import Accuweather as Acc          #for values to be displayed
 import datetime
-import requests
-import json
+import copy #for deepcopying
+
 
 mode = "RGBA"
 
@@ -31,7 +30,7 @@ class ImageCombine:
             font = ImageFont.truetype(path_to_font,size)
             draw = ImageDraw.Draw(self.Image)
 
-            #renderin on some systems may cause text to get jumpled up, this fixes it
+            #rendering on some systems may cause text to get jumpled up, this fixes it
             if isArabic:
                 r = arabic_reshaper.reshape(text)
                 text = get_display(r)
@@ -76,7 +75,8 @@ class ImageCombine:
             self.drawTextAt(week_cords[i][4],self.weather.forecasts[i+1]["night"]["temp"]+"°",color=(0,0,139),font = "Myriad",size = 40,stroke = 1) #draw night
         for i in range(0,4):
             self.drawTextAt(week_cords[i][0],self.weather.forecasts[i]["weekday"],size = 24,isArabic=True)      
-
-    def show(self):
-        self.Image.show()
+    def toImage(self):
+        #need a deep copy so that python doesn't allow direct access to variable
+        img = copy.deepcopy(self.Image)
+        return img
 
