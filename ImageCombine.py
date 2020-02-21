@@ -6,29 +6,7 @@ from Weather import Accuweather as Acc          #for values to be displayed
 import requests
 import json
 
-""""
-    weather_icon_day : (x,y) cordinates for day weather discription icon
-    weather_temp_day : (x,y) cordinated for day tempreture in celcius
-    weather_desc_day : (x,y) cordinates for short day weather discription 
-
-    weather_icon_night : (x,y) cordinates for night weather discription
-    weather_temp_night : (x,y) cordinates for night tempreture in celcius
-    weather_desc_night : (x,y) cordinates for short night weather discription 
-
-    current_date : (x,y) cordinates for current date
-"""
-cords = {
-    "weather_icon_day":tuple(),
-    "weather_desc_day":tuple(),
-    "weather_temp_day":tuple(),
-
-    "weather_icon_night":tuple(),
-    "weather_temp_night":tuple(),
-    "weather_desc_night":tuple(),
-    "current_date":tuple()
-}
 mode = "RGBA"
-
 
 class ImageCombine:
     def __init__(self,weather,bg_path,fg_path):
@@ -67,7 +45,6 @@ class ImageCombine:
         night_icon = self.weather.forecasts[0]["night"]["icon"]
         night_text = self.weather.forecasts[0]["night"]["text"]
         
-
         #draw forground
         self.drawItemAt((237,23),self.fg_path)
 
@@ -88,6 +65,7 @@ class ImageCombine:
             [(842+13,691),(791,673),(817,752)],
             [(1103+13,691),(1045,673),(1078,752)]
         ]
+        #WIP
         for i in range(0,4):
 
             self.drawTextAt(week_cords[i][0],"lol",size = 60)
