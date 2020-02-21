@@ -72,8 +72,8 @@ class ImageCombine:
         for i in range(0,4):
             self.drawItemAt(week_cords[i][1],"assests/img/weekbox.png")
             self.drawItemAt(week_cords[i][2],"assests/img/icons/%s.png"%(self.weather.forecasts[i+1]["day"]["icon"]),size =(115,115))
-            self.drawTextAt(week_cords[i][3],self.weather.forecasts[i+1]["day"]["temp"]+"°",color="red",font="Myriad") #draw high
-            self.drawTextAt(week_cords[i][4],self.weather.forecasts[i+1]["night"]["temp"]+"°",color="blue",font = "Myriad") #draw night
+            self.drawTextAt(week_cords[i][3],self.weather.forecasts[i+1]["day"]["temp"]+"°",color="red",font="Myriad",size = 40,stroke=1) #draw high
+            self.drawTextAt(week_cords[i][4],self.weather.forecasts[i+1]["night"]["temp"]+"°",color=(0,0,139),font = "Myriad",size = 40,stroke = 1) #draw night
         for i in range(0,4):
             self.drawTextAt(week_cords[i][0],self.weather.forecasts[i]["weekday"],size = 24,isArabic=True)      
 
