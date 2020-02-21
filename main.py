@@ -1,25 +1,24 @@
 from Weather import Accuweather as Accu
-from CombineImage import CombineImage
+from ImageCombine import ImageCombine
 import time
+import pickle
+import os
 
 today = time.strftime("%a, %d-%b") 
-token = "XiiGZhD2SDOxEKo7eZFlviOgYNTaeZ4P"
-
+token = "lAgrzeGURoehOb3R5NgLZL1eg2rhMTCu"
 bg_path = "assests/img/bg.png"
 fg_path = "assests/img/fg.png"
 
 weather = Accu(token, 224034, lang="ar")
-Image = CombineImage(
-    weather.forecasts[0]["day"]["icon"],
-    weather.forecasts[0]["night"]["icon"],
-    weather.forecasts[0]["day"]["temp"],
-    weather.forecasts[0]["night"]["temp"],
-    "lol",
-    "lol",
-    bg_path,
-    fg_path
-    )
+if not os.path.exists("pickledAccu.txt"):
+    with open("pickledAccu.txt","wb") as f:
+        pickle.dump(weather,f)
+else:
+    with open("pickledAccu.txt","rb") as f:
+        weather = pickle.load(f)
+w = ImageCombine(weather,bg_path,fg_path)
+w.show()
 
-print(weather.forecasts[0])
+#print(weather.forecasts[0])
 #weather.print()
 

@@ -27,16 +27,16 @@ class Accuweather:
             self.link = self.dic["Headline"]["MobileLink"]
             # initializing forecasts array
             self.forecasts = [{
-                "day": {"temp": 0, "icon": 0, "text": ""},
-                "night": {"temp": 0, "icon": 0, "text": ""}
+                "day": {"temp": "0", "icon": 0, "text": ""},
+                "night": {"temp": "0", "icon": 0, "text": ""}
             }] * 5
             for i in range(5):
                 # Day
-                self.forecasts[i]["day"]["temp"] = self.dic["DailyForecasts"][i]["Temperature"]["Maximum"]["Value"]
+                self.forecasts[i]["day"]["temp"] = str(int(self.dic["DailyForecasts"][i]["Temperature"]["Maximum"]["Value"]))
                 self.forecasts[i]["day"]["icon"] = self.dic["DailyForecasts"][i]["Day"]["Icon"]
                 self.forecasts[i]["day"]["text"] = self.dic["DailyForecasts"][i]["Day"]["IconPhrase"]
                 # Night
-                self.forecasts[i]["night"]["temp"] = self.dic["DailyForecasts"][i]["Temperature"]["Minimum"]["Value"]
+                self.forecasts[i]["night"]["temp"] = str(int(self.dic["DailyForecasts"][i]["Temperature"]["Minimum"]["Value"]))
                 self.forecasts[i]["night"]["icon"] = self.dic["DailyForecasts"][i]["Night"]["Icon"]
                 self.forecasts[i]["night"]["text"] = self.dic["DailyForecasts"][i]["Night"]["IconPhrase"]
 # /_end of __init__()
