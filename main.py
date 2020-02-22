@@ -4,21 +4,20 @@ import time
 import pickle
 import os
 
-today = time.strftime("%a, %d-%b") 
-token = "lAgrzeGURoehOb3R5NgLZL1eg2rhMTCu"
-bg_path = "assests/img/bg.png"
+today = time.strftime("%a, %d-%b")
+token = "XiiGZhD2SDOxEKo7eZFlviOgYNTaeZ4P"
+bg_path = "assests/img/bg_nogov.png"
 fg_path = "assests/img/fg.png"
-weather = ""
-if not os.path.exists("pickledAccu.txt"):
-    weather = Accu(token, 224034, lang="ar")
-    with open("pickledAccu.txt","wb") as f:
-        pickle.dump(weather,f)
+load_pickle=True
+
+if load_pickle:
+    print("WARNING: Using Pickled Weather")
+    weather=pickle.load(open("./weather.pickle","rb"))
 else:
-    with open("pickledAccu.txt","rb") as f:
-        weather = pickle.load(f)
-w = ImageCombine(weather,bg_path,fg_path)
+    weather = Accu(token, 224034, lang="ar")
+    pickle.dump(weather,open("./weather.pickle","wb"))
+w = ImageCombine(weather, bg_path, fg_path)
 w.show()
 
 print(weather.forecasts)
-#weather.print()
-
+# weather.print()
