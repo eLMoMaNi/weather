@@ -14,19 +14,19 @@ mode = "RGBA"
 
 
 def textBox(text, width, align="right", fix=True):
-    ####
-    # this function do :
-    # 1: add extra spaces in original string for left/center/right alignment
-    # 2: add extra newlines ("\n") to write text on a box instead of a single line, width represents the width of the box
-    ####
+    
+    # This function does the following :
+    #   *Add extra spaces in original string for left/center/right alignment
+    #   *Add extra newlines ("\n") to write text on a box instead of a single line, width represents the width of the box
+    
 
     # if no align is needed, return @_@
     if align == "none":
         return text
-    # delete arabic decorations on the first call only
+    # Delete arabic decorations on the first call only
     if fix:
         text = text.translate({i: None for i in range(1611, 1649)})
-    # base case
+    # Base case
     if len(text) <= width:
         if align == "right":
             return \
@@ -39,9 +39,15 @@ def textBox(text, width, align="right", fix=True):
                 + " "*int((width-len(text))/2) + "\n"
         elif align == "left":
             return \
+<<<<<<< HEAD
                 " "*(width-len(text)) + \
                 text[0:len(text)] + "\n"
     ###
+=======
+            " "*(width-len(text)) + \
+            text[0:len(text)] + "\n"
+
+>>>>>>> a3a7d28dd5eba0f91a3ebbfe0cf3701570516da6
     i = 0
     last_space = 0
     while i <= width:
@@ -50,7 +56,7 @@ def textBox(text, width, align="right", fix=True):
             last_space = i
         i += 1
 
-    # retutn the string depending on alingment
+    # Return the string depending on alingment
     if align == "right":
         return \
             text[0:last_space] \
@@ -75,13 +81,13 @@ class ImageCombine:
         self.bg_path = bg_path
         self.fg_path = "assests/img/fg.png"
         self.weather = weather
-        # set up backround and convert to correct mode
+        # Set up backround and convert to correct mode
         self.img = Image.open(bg_path).convert(mode)
 
-        # draw contents over background
+        # Draw contents over background
         self.drawContents()
 
-    def drawItemAt(self, xy, path_to_item, size=-1):
+    def drawItemAt(self, xy, path_to_item, size= -1):
         new_img = Image.open(path_to_item).convert(mode)
         if not size == -1:
             new_img = new_img.resize(size)
@@ -92,7 +98,8 @@ class ImageCombine:
         path_to_font = "assests/fonts/%s.ttf" % (font)
         font = ImageFont.truetype(path_to_font, size)
         draw = ImageDraw.Draw(self.img)
-        # renderin on some systems may cause text to get jumpled up, this fixes it
+        #   Rendering text on some systems may cause text to get jumpled up, this checks for said platform
+        # and attempts to fix the text
         if isArabic and platform.system() == "Windows":
             print("Fixing arabic font....")
             r = arabic_reshaper.reshape(text)
@@ -110,51 +117,64 @@ class ImageCombine:
         night_icon = self.weather.forecasts[0]["night"]["icon"]
         night_text = self.weather.forecasts[0]["night"]["text"]
 
-        # draw forground
+        # Draw foreground
         self.drawItemAt((237, 23), self.fg_path)
-        # day stuff
+        # Render day stuff
         self.drawItemAt((808, 202), "assests/img/icons/%s.png" % (day_icon))
         self.drawTextAt((1070, 315), day_text, color="white",
                         isArabic=True, font="monoBold", align="right", size=18)
         self.drawTextAt((1081, 204), day_temp, size=100,
                         color="red", font="Myriad")
 
-        # night stuff
+        # Render night stuff
         self.drawItemAt((316, 202), "assests/img/icons/%s.png" % (night_icon))
         self.drawTextAt((590, 315), night_text, color="white",
                         isArabic=True, font="monoBold", align="right", size=18)
         self.drawTextAt((601, 204), night_temp, size=100,
                         color="blue", font="Myriad")
+<<<<<<< HEAD
         # today date text (English)
         today = time.strftime("%A, %d/%b")
         self.drawTextAt((657,500),today,font="Myriad",color="white")
         
 
         # box_cords is the first box from the left cords
+=======
+        # box_cords represents the cordinates of the first card's 4 corners tl,tr,bl,br  
+>>>>>>> a3a7d28dd5eba0f91a3ebbfe0cf3701570516da6
         box_cords = [(284, 674), (336, 689), (311, 752),
                      (387, 875), (333, 875)]
-        # drawing dayinbox,weekboxes,iconinbox,high/low
+        # Render/Draw dayinbox,weekboxes,iconinbox,high/low
         for i in range(1, 5):
-            # 1 the box itself
+            # The box itself
             self.drawItemAt(box_cords[0], "assests/img/weekbox.png")
-            # 2 weekday name
+            # Week day name
             self.drawTextAt(
+<<<<<<< HEAD
                 box_cords[1], self.weather.forecasts[i]["weekday"], size=24, isArabic=True, color="white")
             # 3 weekday Icon
+=======
+                box_cords[1], self.weather.forecasts[i]["weekday"], size=24, isArabic=True,color="white")
+            # Week day Icon
+>>>>>>> a3a7d28dd5eba0f91a3ebbfe0cf3701570516da6
             self.drawItemAt(box_cords[2], "assests/img/icons/%s.png" %
                             (self.weather.forecasts[i]["day"]["icon"]), size=(115, 115))
-            # 4 weekday high temp
+            # Week day high temp
             self.drawTextAt(box_cords[3], self.weather.forecasts[i]["day"]
                             ["temp"], color="red", font="Myriad", size=40)
-            # 5 weekday low temp
+            # Week day low temp
             self.drawTextAt(box_cords[4], self.weather.forecasts[i]["night"]["temp"], color=(
                 0, 0, 255), font="Myriad", size=40)
-            # moving to the next box cords by adding 254 to x-axis
+            # Since each box is 254px away from the next add 254 to the x-axis to each box_cords
             for j in range(len(box_cords)):
                 box_cords[j] = (box_cords[j][0]+254, box_cords[j][1])
 
     def show(self):
         self.img.show()
 
+<<<<<<< HEAD
     def save(self, path):
+=======
+    def save(self,path):
+>>>>>>> a3a7d28dd5eba0f91a3ebbfe0cf3701570516da6
         self.img.save(path)

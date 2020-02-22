@@ -20,10 +20,16 @@ govs = {
 
 
 class Accuweather:
+<<<<<<< HEAD
     def __init__(self, token, city_id, lang="ar"):
+=======
+    def __init__(self, token, city, lang="ar"):
+        # Fetch current week day
+>>>>>>> a3a7d28dd5eba0f91a3ebbfe0cf3701570516da6
         self.today = int(datetime.datetime.today().strftime('%w'))
+        # Since self.today is guaranteed to be 0-6 map the integers to actual days
         self.days_in_week = {
-            0: "الأحد  ",
+            0: "الأحد",
             1: "اللإثنين",
             2: "الثلاثاء",
             3: "الأربعاء",
@@ -31,7 +37,7 @@ class Accuweather:
             5: "الجمعة",
             6: "السبت"
         }
-        # initializing the request
+        # Initializing the request
         URL = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/" + \
             str(city_id)
         options = {
@@ -39,21 +45,21 @@ class Accuweather:
             "language": lang,
             "metric": True
         }
-        # sending the GET request
+        # Sending the GET request
         self.res = requests.get(URL, params=options)
-        # checking the response status
+        # Checking the response status
         if self.res.status_code != 200:
             print("ERROR, status code:")
             print(self.res.status_code)
             print("URL:\n"+self.res.url)
             raise Exception()
-        # storing the data on the format day/night :temp,icon,text
+        # Storing the data in the format day/night :temp,icon,text
         else:
-            # storing json into a Dictionary
+            # Storing json into a Dictionary
             self.dic = self.res.json()
-            # the "more details" link
+            # The "more details" link
             self.link = self.dic["Headline"]["MobileLink"]
-            # initializing forecasts array
+            # Initializing forecasts array
             self.forecasts = []
             for i in range(5):
                 # Day
@@ -75,7 +81,6 @@ class Accuweather:
                     }
                 )
                 self.today += 1
-# /_end of __init__()
 
     def print(self):
         print(self.res.status_code)
