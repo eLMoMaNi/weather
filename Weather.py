@@ -6,7 +6,7 @@ class Accuweather:
     def __init__(self, token, city, lang="ar"):
         self.today = int(datetime.datetime.today().strftime('%w'))
         self.days_in_week = {
-            0: "الأحد",
+            0: "الأحد  ",
             1: "اللإثنين",
             2: "الثلاثاء",
             3: "الأربعاء",

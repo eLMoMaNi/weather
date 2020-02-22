@@ -8,7 +8,7 @@ today = time.strftime("%a, %d-%b")
 token = "XiiGZhD2SDOxEKo7eZFlviOgYNTaeZ4P"
 bg_path = "assests/img/bg_nogov.png"
 fg_path = "assests/img/fg.png"
-load_pickle=True
+load_pickle=1
 
 if load_pickle:
     print("WARNING: Using Pickled Weather")
