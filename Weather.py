@@ -74,7 +74,6 @@ class Accuweather:
                         "weekday": self.days_in_week[self.today % 7]
                     }
                 )
-                print(self.today)
                 self.today += 1
 # /_end of __init__()
 
