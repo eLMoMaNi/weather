@@ -18,7 +18,7 @@ govs_list = {
     "الزرقاء": 222674,
     "السلط": 221989,
     "الكرك": 222081,
-    "الطفيله": 222569,
+    "الطفيلة": 222569,
     "معان": 224521,
     "العقبة": 221898,
     "التكنو": 224034
@@ -34,7 +34,7 @@ working_dir = "apis/weather2"
 host = host_name+working_dir
 
 # do you love pickles ? I do :). (for debugging)
-load_pickle = 1
+load_pickle = 0
 
 
 for gov in govs_list:
@@ -67,12 +67,9 @@ for gov in govs_list:
     # content of json file (only a single message with gov image)
     json_data = {"messages": [
         {"attachment": {"type": "image", "payload": {"url": host+f"/outputs/{gov}.png"}}}
-    ]}
+    ],
+                "set_attributes":{"gov_link":weather.link}
+    }
     # writing json file
     json_file = open(f"./outputs/{gov}.json", "w", encoding='utf8')
     json.dump(json_data, json_file, ensure_ascii=False)
-    break
-
-
-print(weather.forecasts)
-# weather.print()
