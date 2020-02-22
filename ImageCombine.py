@@ -127,7 +127,7 @@ class ImageCombine:
             self.drawItemAt(box_cords[0], "assests/img/weekbox.png")
             # 2 weekday name
             self.drawTextAt(
-                box_cords[1], self.weather.forecasts[i]["weekday"], size=24, isArabic=False,color="white")
+                box_cords[1], self.weather.forecasts[i]["weekday"], size=24, isArabic=True,color="white")
             # 3 weekday Icon
             self.drawItemAt(box_cords[2], "assests/img/icons/%s.png" %
                             (self.weather.forecasts[i]["day"]["icon"]), size=(115, 115))
