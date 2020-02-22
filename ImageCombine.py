@@ -91,7 +91,7 @@ class ImageCombine:
         if isArabic and platform.system() == "Windows":
             print("Fixing arabic font....")
             r = arabic_reshaper.reshape(text)
-            text = get_display(r)
+            text = textBox(get_display(r),box_width,align)
 
         draw.text(xy, text, font=font, fill=color)
 
