@@ -1,9 +1,14 @@
-from PIL import Image, ImageDraw, ImageFont, ImageFilter  # PILLOW dependencies
-from bidi.algorithm import get_display  # for fixing arabic text
-import arabic_reshaper  # for fixing arabic text
-from Weather import Accuweather as Acc  # for values to be displayed
-import datetime  # to get today name
-import platform  # to check OS
+# PILLOW dependencies
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+# for fixing arabic text in Windows
+from bidi.algorithm import get_display
+import arabic_reshaper
+# for values to be displayed (NOT necessary)
+from Weather import Accuweather as Acc
+# to get day date as a number or a text
+import datetime,time
+# to check OS
+import platform
 
 mode = "RGBA"
 
@@ -15,8 +20,8 @@ def textBox(text, width, align="right", fix=True):
     # 2: add extra newlines ("\n") to write text on a box instead of a single line, width represents the width of the box
     ####
 
-    #if no align is needed, return @_@
-    if align=="none":
+    # if no align is needed, return @_@
+    if align == "none":
         return text
     # delete arabic decorations on the first call only
     if fix:
@@ -26,16 +31,16 @@ def textBox(text, width, align="right", fix=True):
         if align == "right":
             return \
                 text[0:len(text)] \
-                + " "*(width-len(text)) + "\n" 
+                + " "*(width-len(text)) + "\n"
         elif align == "center":
             return \
-            " "*int((width-len(text))/2) \
-             + text[0:len(text)] \
-            + " "*int((width-len(text))/2) + "\n" 
+                " "*int((width-len(text))/2) \
+                + text[0:len(text)] \
+                + " "*int((width-len(text))/2) + "\n"
         elif align == "left":
             return \
-            " "*(width-len(text)) + \
-            text[0:len(text)] + "\n"
+                " "*(width-len(text)) + \
+                text[0:len(text)] + "\n"
     ###
     i = 0
     last_space = 0
@@ -65,10 +70,10 @@ def textBox(text, width, align="right", fix=True):
 
 
 class ImageCombine:
-    def __init__(self, weather, bg_path, fg_path):
+    def __init__(self, weather, bg_path):
         # save background, foreground and weather data for later use
         self.bg_path = bg_path
-        self.fg_path = fg_path
+        self.fg_path = "assests/img/fg.png"
         self.weather = weather
         # set up backround and convert to correct mode
         self.img = Image.open(bg_path).convert(mode)
@@ -91,7 +96,7 @@ class ImageCombine:
         if isArabic and platform.system() == "Windows":
             print("Fixing arabic font....")
             r = arabic_reshaper.reshape(text)
-            text = textBox(get_display(r),box_width,align)
+            text = textBox(get_display(r), box_width, align)
 
         draw.text(xy, text, font=font, fill=color)
 
@@ -109,15 +114,22 @@ class ImageCombine:
         self.drawItemAt((237, 23), self.fg_path)
         # day stuff
         self.drawItemAt((808, 202), "assests/img/icons/%s.png" % (day_icon))
-        self.drawTextAt((1070, 315), day_text, color="white", isArabic=True,font="monoBold",align="right",size=18)
+        self.drawTextAt((1070, 315), day_text, color="white",
+                        isArabic=True, font="monoBold", align="right", size=18)
         self.drawTextAt((1081, 204), day_temp, size=100,
                         color="red", font="Myriad")
 
         # night stuff
         self.drawItemAt((316, 202), "assests/img/icons/%s.png" % (night_icon))
-        self.drawTextAt((590, 315), night_text, color="white", isArabic=True,font="monoBold",align="right",size=18)
+        self.drawTextAt((590, 315), night_text, color="white",
+                        isArabic=True, font="monoBold", align="right", size=18)
         self.drawTextAt((601, 204), night_temp, size=100,
                         color="blue", font="Myriad")
+        # today date text (English)
+        today = time.strftime("%A, %d/%b")
+        self.drawTextAt((657,500),today,font="Myriad",color="white")
+        
+
         # box_cords is the first box from the left cords
         box_cords = [(284, 674), (336, 689), (311, 752),
                      (387, 875), (333, 875)]
@@ -127,7 +139,7 @@ class ImageCombine:
             self.drawItemAt(box_cords[0], "assests/img/weekbox.png")
             # 2 weekday name
             self.drawTextAt(
-                box_cords[1], self.weather.forecasts[i]["weekday"], size=24, isArabic=True,color="white")
+                box_cords[1], self.weather.forecasts[i]["weekday"], size=24, isArabic=True, color="white")
             # 3 weekday Icon
             self.drawItemAt(box_cords[2], "assests/img/icons/%s.png" %
                             (self.weather.forecasts[i]["day"]["icon"]), size=(115, 115))
@@ -143,5 +155,6 @@ class ImageCombine:
 
     def show(self):
         self.img.show()
-    def save(self,path):
+
+    def save(self, path):
         self.img.save(path)

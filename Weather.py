@@ -1,9 +1,26 @@
+# to send a GET request
 import requests
+# to get day date as a number
 import datetime
+
+govs = {
+    "عجلون": 221874,
+    "مأدبا": 224575,
+    "إربد": 224033,
+    "جرش": 224190,
+    "المفرق": 222143,
+    "عمّان": 221790,
+    "الزرقاء": 222674,
+    "السلط": 221989,
+    "الكرك": 222081,
+    "الطفيله": 222569,
+    "مَعان": 224521,
+    "العقبة": 221898,
+}
 
 
 class Accuweather:
-    def __init__(self, token, city, lang="ar"):
+    def __init__(self, token, city_id, lang="ar"):
         self.today = int(datetime.datetime.today().strftime('%w'))
         self.days_in_week = {
             0: "الأحد  ",
@@ -16,7 +33,7 @@ class Accuweather:
         }
         # initializing the request
         URL = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/" + \
-            str(city)
+            str(city_id)
         options = {
             "apikey": token,
             "language": lang,
