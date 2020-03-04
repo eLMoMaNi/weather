@@ -25,51 +25,55 @@ govs_list = {
 }
 # Accuweather API token
 token = "XiiGZhD2SDOxEKo7eZFlviOgYNTaeZ4P"
-# host name to send image url to chatfuel (payload)
+# Host name to send image url to chatfuel (payload)
 host_name = "https://justgeeks.tk/"
 # Working dir relative - don't start with "\" - to web server's root (for json file and img)
-# note : you should but all of this repo files & dirs there
+# Note: Put all of this repo files & dirs there
 working_dir = "apis/weather2"
 
 host = host_name+working_dir
 
-# do you love pickles ? I do :). (for debugging)
+# load_pickle: set 0 to not load pickle, 1 to load
 load_pickle = 0
 
-
 for gov in govs_list:
-    # load pickle or not
+    # Load pickle or not
     if load_pickle:
         print("WARNING: Using Pickled Weather")
-        weather = pickle.load(open("./weather.pickle", "rb"))
+        with open("weather.pickle","rb") as f:
+            weather = pickle.load(f)
     else:
         weather = Accu(token, govs_list[gov], lang="ar")
-        pickle.dump(weather, open("./weather.pickle", "wb"))
-
-# background image path
-    # directory of background folders
+        with open("weather.pickle","wb") as f:
+            pickle.dump(weather,f)
+# Background image path
+    # Directory of background folders
     bg_dir = "/assests/img/backgrounds/"
-    # this list will contain image names (eg pic.png)
+
+    # This list will contain image names (eg pic.png)
     bg_list = []
-    # loop over all files in current gov folder
-    #note os.getcwd() = working dir, since os lib can only take absolute dirs
+
+    # Loop over all files in current gov folder
+    # Note: os.getcwd() = working dir, since os lib can only take absolute dirs
     for f in os.listdir(os.getcwd()+bg_dir+gov):
         bg_list.append(os.getcwd()+bg_dir+gov+"/"+f)
-    # get day of the year
+
+    # Get day of the year
     day_of_year = datetime.now().timetuple().tm_yday
-    # get image depending on day of year
+
+    # Get image depending on day of year
     bg_img_path = bg_list[day_of_year % len(bg_list)]
-# /end of bg path
-    # storing ready image (combined) object
+# End of bg path
+    # Storing ready (combined) image object
     img = ImageCombine(weather, bg_img_path)
-    # saving image
-    img.save(f"./outputs/{gov}.png")
+    # Saving image
+    img.save("outputs/{}.png".format(gov))
     # content of json file (only a single message with gov image)
     json_data = {"messages": [
-        {"attachment": {"type": "image", "payload": {"url": host+f"/outputs/{gov}.png"}}}
+        {"attachment": {"type": "image", "payload": {"url": host+"/outputs/{}.png".format(gov)}}}
     ],
                 "set_attributes":{"gov_link":weather.link}
     }
-    # writing json file
-    json_file = open(f"./outputs/{gov}.json", "w", encoding='utf8')
-    json.dump(json_data, json_file, ensure_ascii=False)
+    # Writing json file
+    with open("outputs/{}.json".format(gov), "w", encoding='utf8') as json_file:
+        json.dump(json_data, json_file, ensure_ascii= False)
