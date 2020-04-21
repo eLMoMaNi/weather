@@ -5,7 +5,7 @@ import pickle
 import os
 
 today = time.strftime("%a, %d-%b") 
-token = "lAgrzeGURoehOb3R5NgLZL1eg2rhMTCu"
+token = "GetYourOwnTokenPlz" 
 bg_path = "assests/img/bg.png"
 fg_path = "assests/img/fg.png"
 weather = ""
