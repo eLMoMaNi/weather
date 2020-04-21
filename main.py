@@ -24,7 +24,7 @@ govs_list = {
     "التكنو": 224034
 }
 # Accuweather API token
-token = "XiiGZhD2SDOxEKo7eZFlviOgYNTaeZ4P"
+token = "GetYourOwn"
 # Host name to send image url to chatfuel (payload)
 host_name = "https://justgeeks.tk/"
 # Working dir relative - don't start with "\" - to web server's root (for json file and img)
